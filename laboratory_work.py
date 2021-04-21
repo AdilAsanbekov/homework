@@ -1,10 +1,9 @@
-from random import randit
+from random import randint
 from abc import ABC, abstractmethod
 from math import floor
 
 class Characted(ABC):
-	def __init__(self, name,level=8, strength=8, dexterity=8, physique=14, intelligence=8, wisdom=8, charisma=8,constitution=8, max_hp=20, hp=20, armour_class=23, initiative=0):
-		return(self)
+	def __init__(self, name,level=1, strength=8, dexterity=8, intelligence=8, wisdom=8, charisma=8,constitution=8):
 		self.level = level
 		self.strength = strength
 		self.dexterity = dexterity
@@ -12,32 +11,27 @@ class Characted(ABC):
 		self.intelligence = intelligence
 		self.wisdom = wisdom
 		self.charisma = charisma
-		self.max_hp = 10 + physique + 1d10 * level
-		self.hp = max_hp
-		self.armour_class = 15 + dexterity
-		self.initiative = 1d20 + dexterity
+		self.max_hp = 10 + floor((self.constitution - 10) / 2) + randint(1, 11) * self.level
+		self.hp = self.max_hp
+		self.armour_class = 15 + floor((self.dexterity - 10) / 2)
+		self.initiative = randint(1, 21) + floor(((self.dexterity - 10) / 2))
 
 	def attack(self):
-		return
+		return randint(1, 13) + floor(((self.strength - 10) / 2))
 
 	def save_throw(self, attribute):
-		return
+		return randint(1, 21) + floor(((attribute - 10) / 2))
 
+	@abstractmethod	
 	def perk(self):
-		return
+		pass
 
-	# if 2d6:
-	# 	return 1<= 2d6 <12
 
-	# elif 2d8:
-	# 	return 1<= 2d8 <16
-
-	# elif 1d20:
-	# 	return 1<= 1d20 <20
-		
 class Hero(Characted):
 	def perk(self):
+		return randint(1, 17) + floor(((self.wisdom - 10) / 2))
 
 
 class Dragon(Characted):
 	def perk(self):
+		return randint(1, 17) + floor(((self.strength - 10) / 2))
